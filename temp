@@ -1,0 +1,5 @@
+pos=Articles()
+        pos.title=self.request.get('title')
+        pos.content=self.request.get('content')
+        pos.category=self.request.get('category')
+        pos.put()
