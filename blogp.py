@@ -64,6 +64,13 @@ class blog_create(webapp2.RequestHandler):
                 
               """)
             self.response.out.write('</form>')
+      else:
+            
+            self.redirect(users.create_login_url(self.request.uri))
+
+    def get(self):
+
+        self.post()
       
 
 class blog_display(webapp2.RequestHandler):
@@ -93,16 +100,13 @@ class display_all(webapp2.RequestHandler):
         #self.response.out.write('%s' %x)
         posts= db.GqlQuery("SELECT * FROM Post WHERE blog_name = :1 ",x )
         for post in posts:
-            self.response.out.write('<div>%s</div>'%(post.title))
+            self.response.out.write('<div><u>%s</u></div>'%(post.title))
             self.response.out.write('<div>%s</div>'%(post.content))
 
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-        user = users.get_current_user()
-        if user:         
-            self.response.out.write('Hello <em>%s</em>! Create a blog[<a href="%s">sign out</a>] ' % (
-            user.email(), users.create_logout_url(self.request.uri)))
+        
             self.response.out.write('<br><br>')
             all_blogs=db.GqlQuery("SELECT Distinct name FROM Blog")
             for blog in all_blogs:
@@ -115,8 +119,7 @@ class MainPage(webapp2.RequestHandler):
                              """)
             self.response.out.write('</form>')  
 
-        else:
-            self.redirect(users.create_login_url(self.request.uri))
+        
 
 
 
